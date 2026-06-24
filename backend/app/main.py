@@ -60,7 +60,10 @@ allowed_origins = [
     "http://localhost:5174",
     "http://127.0.0.1:5174",
 
-    # Add your Vercel URL here later
+    # Render Frontend
+    "https://customer-retention-ai-crx5.onrender.com",
+
+    # Future Vercel Deployment
     "https://retention-ai.vercel.app",
 ]
 
@@ -71,8 +74,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 # =====================================
 # HEALTH CHECK
 # =====================================
