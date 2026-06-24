@@ -1,4 +1,3 @@
-
 import axios from "axios";
 
 // ======================================
@@ -6,7 +5,9 @@ import axios from "axios";
 // ======================================
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000",
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL ||
+    "http://localhost:8000",
   headers: {
     "Content-Type": "application/json",
   },
@@ -16,20 +17,15 @@ const api = axios.create({
 // REQUEST INTERCEPTOR
 // ======================================
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+
+  return config;
+});
 
 // ======================================
 // RESPONSE INTERCEPTOR
@@ -37,71 +33,63 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => response,
-
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-
-      window.location.href = "/";
-    }
-
     console.error(
       "API Error:",
       error.response?.data || error.message
     );
+
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
 
     return Promise.reject(error);
   }
 );
 
 // ======================================
-// AUTH APIs
+// AUTH
 // ======================================
 
-export const register = async (data) => {
-  return await api.post("/register", data);
-};
+export const register = (data) =>
+  api.post("/register", data);
 
-export const login = async (data) => {
-  return await api.post("/login", data);
-};
+export const login = (data) =>
+  api.post("/login", data);
 
 // ======================================
-// CHURN PREDICTION
+// PREDICTIONS
 // ======================================
 
-export const predictChurn = async (data) => {
-  return await api.post("/predict", data);
-};
+export const predictChurn = (data) =>
+  api.post("/predict/", data);   // trailing slash
 
-// ======================================
-// HISTORY
-// ======================================
-
-export const getHistory = async () => {
-  return await api.get("/predict/history");
-};
-
+export const getHistory = () =>
+  api.get("/predict/history");
 
 // ======================================
 // DATASETS
 // ======================================
 
-export const uploadDataset = async (file) => {
-  const form = new FormData();
-  form.append("file", file);
-  return await api.post("/predict/datasets/upload", form, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+export const uploadDataset = (file) => {
+  const formData = new FormData();
+
+  formData.append("file", file);
+
+  return api.post(
+    "/predict/datasets/upload",
+    formData,
+    {
+      headers: {
+        "Content-Type":
+          "multipart/form-data",
+      },
+    }
+  );
 };
 
-export const getDatasets = async () => {
-  return await api.get("/predict/datasets");
-};
-
-// ======================================
-// EXPORT
-// ======================================
+export const getDatasets = () =>
+  api.get("/predict/datasets");
 
 export default api;
-
