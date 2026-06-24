@@ -1,0 +1,16 @@
+tenure,MonthlyCharges,TotalCharges,Contract,PaymentMethod,InternetService,OnlineSecurity,TechSupport,PaperlessBilling
+2,70.70,151.65,Month-to-month,Electronic check,Fiber optic,No,No,Yes
+34,56.95,1889.50,One year,Mailed check,DSL,Yes,No,No
+2,53.85,108.15,Month-to-month,Mailed check,DSL,No,No,Yes
+45,42.30,1840.75,One year,Bank transfer (automatic),No,No internet service,No internet service,No
+2,70.70,151.65,Month-to-month,Electronic check,Fiber optic,No,No,Yes
+8,99.65,820.50,Month-to-month,Electronic check,Fiber optic,No,No,Yes
+22,89.10,1949.40,Month-to-month,Electronic check,Fiber optic,No,Yes,Yes
+10,25.35,266.55,Month-to-month,Electronic check,No,No internet service,No internet service,No
+28,56.15,1631.80,One year,Credit card (automatic),DSL,Yes,Yes,Yes
+62,19.85,1230.55,Two year,Bank transfer (automatic),DSL,Yes,Yes,No
+3,49.95,165.65,Month-to-month,Electronic check,DSL,No,No,Yes
+72,24.10,1734.65,Two year,Mailed check,No,No internet service,No internet service,No
+1,79.85,79.85,Month-to-month,Electronic check,Fiber optic,No,No,Yes
+6,24.10,151.65,Month-to-month,Electronic check,No,No internet service,No internet service,Yes
+5,84.80,431.90,Month-to-month,Electronic check,Fiber optic,No,No,Yes
