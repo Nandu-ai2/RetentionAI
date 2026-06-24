@@ -32,11 +32,13 @@ from .auth import (
 
 from .predict import router as predict_router
 
+
 # =====================================
 # CREATE DATABASE TABLES
 # =====================================
 
 Base.metadata.create_all(bind=engine)
+
 
 # =====================================
 # FASTAPI APP
@@ -47,22 +49,29 @@ app = FastAPI(
     version="1.0.0"
 )
 
+
 # =====================================
-# CORS
+# CORS CONFIGURATION
 # =====================================
 
-origins = os.getenv(
-    "ALLOWED_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173"
-).split(",")
+allowed_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+
+    # Add your Vercel URL here later
+    "https://retention-ai.vercel.app",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # =====================================
 # HEALTH CHECK
@@ -74,6 +83,7 @@ def root():
         "message":
         "Customer Churn Prediction API Running"
     }
+
 
 # =====================================
 # REGISTER
@@ -87,14 +97,6 @@ def register(
     user: UserCreate,
     db: Session = Depends(get_db)
 ):
-
-    print("=" * 50)
-    print("REGISTER REQUEST")
-    print("USERNAME:", user.username)
-    print("EMAIL:", user.email)
-    print("PASSWORD:", user.password)
-    print("PASSWORD LENGTH:", len(user.password))
-    print("=" * 50)
 
     existing_email = (
         db.query(User)
@@ -136,6 +138,7 @@ def register(
 
     return new_user
 
+
 # =====================================
 # LOGIN
 # =====================================
@@ -149,12 +152,10 @@ def login(
     db: Session = Depends(get_db)
 ):
 
-    authenticated_user = (
-        authenticate_user(
-            user.email,
-            user.password,
-            db
-        )
+    authenticated_user = authenticate_user(
+        user.email,
+        user.password,
+        db
     )
 
     if not authenticated_user:
@@ -164,25 +165,23 @@ def login(
             detail="Invalid email or password"
         )
 
-    access_token = (
-        create_access_token(
-            data={
-                "sub":
-                authenticated_user.email
-            }
-        )
+    access_token = create_access_token(
+        data={
+            "sub":
+            authenticated_user.email
+        }
     )
 
     return {
         "access_token":
         access_token,
-
         "token_type":
         "bearer"
     }
 
+
 # =====================================
-# INCLUDE ML ROUTES
+# INCLUDE PREDICTION ROUTES
 # =====================================
 
 app.include_router(
