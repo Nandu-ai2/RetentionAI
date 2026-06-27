@@ -1,17 +1,32 @@
-# Pydantic schemas go here
+# ==========================================
+# Pydantic Schemas
+# ==========================================
+
 from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 
 
-# ==========================
+# ==========================================
 # AUTH SCHEMAS
-# ==========================
+# ==========================================
 
 class UserCreate(BaseModel):
-    username: str = Field(..., min_length=3, max_length=100)
+    username: str = Field(
+        ...,
+        min_length=3,
+        max_length=100,
+        description="Username"
+    )
+
     email: EmailStr
-    password: str = Field(..., min_length=6, max_length=8)
+
+    password: str = Field(
+        ...,
+        min_length=8,
+        max_length=128,
+        description="Password must be between 8 and 128 characters."
+    )
 
 
 class UserLogin(BaseModel):
@@ -28,9 +43,9 @@ class TokenData(BaseModel):
     email: Optional[str] = None
 
 
-# ==========================
+# ==========================================
 # USER RESPONSE
-# ==========================
+# ==========================================
 
 class UserResponse(BaseModel):
     id: int
@@ -43,52 +58,72 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
-# ==========================
+# ==========================================
 # PREDICTION INPUT
-# ==========================
+# ==========================================
 
 class PredictionInput(BaseModel):
+
     tenure: float
+
     MonthlyCharges: float
+
     TotalCharges: float
 
     Contract: str
+
     PaymentMethod: str
+
     InternetService: str
+
     OnlineSecurity: str
+
     TechSupport: str
+
     PaperlessBilling: str
 
 
-# ==========================
+# ==========================================
 # PREDICTION RESPONSE
-# ==========================
+# ==========================================
 
 class PredictionResponse(BaseModel):
+
     prediction: str
+
     probability: float
-    shap_values: dict
+
+    shap_values: Dict
 
 
-# ==========================
+# ==========================================
 # HISTORY RESPONSE
-# ==========================
+# ==========================================
 
 class HistoryResponse(BaseModel):
+
     id: int
 
     tenure: float
+
     monthly_charges: float
+
     total_charges: float
 
     contract: str
+
     payment_method: str
+
     internet_service: str
+
     online_security: str
+
     tech_support: str
+
     paperless_billing: str
 
     churn_prediction: str
+
     churn_probability: float
 
     created_at: datetime
